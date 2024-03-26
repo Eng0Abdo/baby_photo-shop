@@ -31,7 +31,7 @@ void gray_scale() {
 
 void black_and_white() {
   string photoName;
-  cout << "Pls enter colored image name to turn to gray scale: ";
+  cout << "Pls enter colored image name to turn to black and white: ";
   cin >> photoName;
 
   Image image(photoName);
@@ -55,17 +55,77 @@ void black_and_white() {
       }
     }
   }
+  cout << "Pls enter image name to store new image\n";
+  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
+
+  cin >> photoName;
+  image.saveImage(photoName);
+}
+
+void invert_image() {
+  string filename;
+  cout << "Pls enter colored image name to turn to inverted colors: ";
+  cin >> filename;
+
+  Image image(filename);
+
+  for (int i = 0; i < image.width; ++i) {
+    for (int j = 0; j < image.height; ++j) {
+      for (int k = 0; k < 3; ++k) {
+        image(i, j, k) = 255 - image(i, j, k);
+      }
+    }
+  }
+
+  cout << "Pls enter image name to store new image\n";
+  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
+
+  cin >> filename;
+  image.saveImage(filename);
+}
+
+void merge_images() {
+  string filename_1;
+  string filename_2;
+  cout << "Pls enter first image path: ";
+  cin >> filename_1;
+  cout << "Pls enter second image path: ";
+  cin >> filename_2;
+  Image image1(filename_1);
+  Image image2(filename_2);
+  Image new_image(image2.width, image2.height);
+  for (int i = 0; i < new_image.width; i++) {
+    for (int j = 0; j < new_image.height; j++) {
+      for (int k = 0; k < new_image.channels; k++) {
+        new_image(i, j, k) =
+            image1(int(i * (double(image1.width)) / new_image.width),
+                   int(j * (double(image1.height) / new_image.height)), k);
+      }
+    }
+  }
+  for (int i = 0; i < new_image.width; i++) {
+    for (int j = 0; j < new_image.height; j++) {
+      for (int k = 0; k < new_image.channels; k++) {
+        new_image(i, j, k) = ((image2(i, j, k) + new_image(i, j, k)) / 2);
+      }
+    }
+  }
+  cout << "Pls enter image name to store new image\n";
+  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
+  string filename;
+  cin >> filename;
+  new_image.saveImage(filename);
 }
 
 void darken_lighten() {
   string photo;
-  cout << "please inter your coloured photo\n";
+  cout << "please inter your coloured photo: ";
   cin >> photo;
   Image Photo(photo);
   string choice;
   cout << "please inter what do you want \n";
   cout << "[A] to Lighten your image\n";
-  cout << "[B] to Darken your image\n";
+  cout << "[B] to Darken your image\n>> ";
   cin >> choice;
   if (choice == "A" || choice == "a") {
     for (int i = 0; i < Photo.width; i++) {
@@ -104,57 +164,30 @@ void darken_lighten() {
   system(photoname.c_str());
 }
 
-void invert_image() {
-  string filename;
-  cout << "Pls enter colored image name to turn to gray scale: ";
-  cin >> filename;
+int main(){
+  cout << "welcome, that program add some filters to your picture,\n";
 
-  Image image(filename);
-
-  for (int i = 0; i < image.width; ++i) {
-    for (int j = 0; j < image.height; ++j) {
-      for (int k = 0; k < 3; ++k) {
-        image(i, j, k) = 255 - image(i, j, k);
-      }
+  while (true) {
+    cout << "please choose filter: \n"
+            "1)filter_1(gray_scale).\n"
+            "2)filter_2(black_and_white).\n"
+            "3)filter_3(invert_image).\n"
+            "4)filter_4(merge_images).\n"
+            "5)filter_7(darken_lighten).\n"
+            "6)exit.\n";
+    string choice = "";
+    getline(cin, choice);
+    if(choice.length() != 1) {choice = '9';}
+    if (choice[0] == '6') {break;}
+    else if (choice[0] == '1') {gray_scale();}
+    else if (choice[0] == '2') {black_and_white();}
+    else if (choice[0] == '3') {invert_image();}
+    else if (choice[0] == '4') {merge_images();}
+    else if (choice[0] == '5') {darken_lighten();}
+    else {
+      cout << "enter valid number,\n";
     }
   }
 
-  cout << "Pls enter image name to store new image\n";
-  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-
-  cin >> filename;
-  image.saveImage(filename);
+  return 0;
 }
-void merge_images() {
-  string filename_1;
-  string filename_2;
-  cout << "Pls enter first image path: " << endl;
-  cin >> filename_1;
-  cout << "Pls enter second image path: " << endl;
-  cin >> filename_2;
-  Image image1(filename_1);
-  Image image2(filename_2);
-  Image new_image(image2.width, image2.height);
-  for (int i = 0; i < new_image.width; i++) {
-    for (int j = 0; j < new_image.height; j++) {
-      for (int k = 0; k < new_image.channels; k++) {
-        new_image(i, j, k) =
-            image1(int(i * (double(image1.width)) / new_image.width),
-                   int(j * (double(image1.height) / new_image.height)), k);
-      }
-    }
-  }
-  for (int i = 0; i < new_image.width; i++) {
-    for (int j = 0; j < new_image.height; j++) {
-      for (int k = 0; k < new_image.channels; k++) {
-        new_image(i, j, k) = ((image2(i, j, k) + new_image(i, j, k)) / 2);
-      }
-    }
-  }
-  cout << "Pls enter image name to store new image\n";
-  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-  string filename;
-  cin >> filename;
-  new_image.saveImage(filename);
-}
-
