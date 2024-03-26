@@ -125,3 +125,36 @@ void invert_image() {
   cin >> filename;
   image.saveImage(filename);
 }
+void merge_images() {
+  string filename_1;
+  string filename_2;
+  cout << "Pls enter first image path: " << endl;
+  cin >> filename_1;
+  cout << "Pls enter second image path: " << endl;
+  cin >> filename_2;
+  Image image1(filename_1);
+  Image image2(filename_2);
+  Image new_image(image2.width, image2.height);
+  for (int i = 0; i < new_image.width; i++) {
+    for (int j = 0; j < new_image.height; j++) {
+      for (int k = 0; k < new_image.channels; k++) {
+        new_image(i, j, k) =
+            image1(int(i * (double(image1.width)) / new_image.width),
+                   int(j * (double(image1.height) / new_image.height)), k);
+      }
+    }
+  }
+  for (int i = 0; i < new_image.width; i++) {
+    for (int j = 0; j < new_image.height; j++) {
+      for (int k = 0; k < new_image.channels; k++) {
+        new_image(i, j, k) = ((image2(i, j, k) + new_image(i, j, k)) / 2);
+      }
+    }
+  }
+  cout << "Pls enter image name to store new image\n";
+  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
+  string filename;
+  cin >> filename;
+  new_image.saveImage(filename);
+}
+
