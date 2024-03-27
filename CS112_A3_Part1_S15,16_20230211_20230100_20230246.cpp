@@ -1,3 +1,9 @@
+// file name: CS112_A3_Part1_S15,16_20230100_20230211_20230246.cpp
+// description: the program has 5 filters, user choose one of them to apply in his photo.
+// Filter 1: Grayscale Conversion & Filter 4: Merge Images        => by   Peter Girgs Sayed          ID:20230100     S:15,16
+// Filter 2: Black and White & Filter 7: Darken and Lighten Image => by   Abdelrhman Emad Mahmoud    ID:20230211     S:15,16
+// Filter 3: Invert Image                                         => by   Ammar Ali Ghazi            ID:20230246     S:15,16
+
 #include "Image_Class.h"
 #include <iostream>
 
@@ -186,7 +192,9 @@ int main(){
     else if (choice[0] == '5') {darken_lighten();}
     else {
       cout << "enter valid number,\n";
+      continue;
     }
+    cin.ignore();
   }
 
   return 0;
