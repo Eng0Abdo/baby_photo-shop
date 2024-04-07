@@ -3,18 +3,13 @@
 // Filter 1: Grayscale Conversion & Filter 4: Merge Images        => by   Peter Girgs Sayed          ID:20230100     S:15,16
 // Filter 2: Black and White & Filter 7: Darken and Lighten Image => by   Abdelrhman Emad Mahmoud    ID:20230211     S:15,16
 // Filter 3: Invert Image                                         => by   Ammar Ali Ghazi            ID:20230246     S:15,16
-
 #include "Image_Class.h"
 #include <iostream>
-
 using namespace std;
-
 void gray_scale() {
   string filename;
-
   cout << "Pls enter colored image name to turn to gray scale: ";
   cin >> filename;
-
   Image image(filename);
   for (int i = 0; i < image.width; i++) {
     for (int j = 0; j < image.height; j++) {
@@ -30,32 +25,25 @@ void gray_scale() {
   }
   cout << "Pls enter image name to store new image\n";
   cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-
   cin >> filename;
   image.saveImage(filename);
 }
-
 void black_and_white() {
   string photoName;
   cout << "Pls enter colored image name to turn to black and white: ";
   cin >> photoName;
-
   Image image(photoName);
-
   for (int i = 0; i < image.width; ++i) {
     for (int j = 0; j < image.height; ++j) {
-      double avg = 0;
-
+      unsigned int avg = 0;
       for (int k = 0; k < 3; k++) {
         avg += image(i, j, k);
       }
-
       avg /= 3;
-
       for (int k = 0; k < 3; k++) {
-        if (avg > 127.5) {
+        if (avg > 128) {
           image(i, j, k) = 255;
-        } else if (avg < 127.5) {
+        } else if (avg < 128) {
           image(i, j, k) = 0;
         }
       }
@@ -63,18 +51,14 @@ void black_and_white() {
   }
   cout << "Pls enter image name to store new image\n";
   cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-
   cin >> photoName;
   image.saveImage(photoName);
 }
-
 void invert_image() {
   string filename;
   cout << "Pls enter colored image name to turn to inverted colors: ";
   cin >> filename;
-
   Image image(filename);
-
   for (int i = 0; i < image.width; ++i) {
     for (int j = 0; j < image.height; ++j) {
       for (int k = 0; k < 3; ++k) {
@@ -82,14 +66,11 @@ void invert_image() {
       }
     }
   }
-
   cout << "Pls enter image name to store new image\n";
   cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-
   cin >> filename;
   image.saveImage(filename);
 }
-
 void merge_images() {
   string filename_1;
   string filename_2;
@@ -121,6 +102,60 @@ void merge_images() {
   string filename;
   cin >> filename;
   new_image.saveImage(filename);
+}
+
+void rotate_image() {
+  string filename;
+  cout << "Pls enter colored image name to turn to rotate: ";
+  cin >> filename;
+
+  Image image(filename);
+
+  int degree_rotate = 0;
+  cout << "choose degree to rotate(90, 180, 270): ";
+  cin >> degree_rotate;
+
+  Image image2(image.height, image.width);
+  Image image3(image.width, image.height);
+
+  if (degree_rotate == 270) {
+      for (int i = 0; i < image.width; ++i) {
+          for (int j = 0; j < image.height; ++j) {
+              image2(j, image2.height - i - 1, 0) = image(i, j, 0);
+              image2(j, image2.height - i - 1, 1) = image(i, j, 1);
+              image2(j, image2.height - i - 1, 2) = image(i, j, 2);
+          }
+      }
+  }
+  else if (degree_rotate == 180) {
+      for (int i = 0; i < image.width; ++i) {
+          for (int j = 0; j < image.height; ++j) {
+              image3(image3.width - i - 1, image3.height - j - 1, 0) = image(i, j, 0);
+              image3(image3.width - i - 1, image3.height - j - 1, 1) = image(i, j, 1);
+              image3(image3.width - i - 1, image3.height - j - 1, 2) = image(i, j, 2);
+          }
+      }
+  }
+  else {
+      for (int i = 0; i < image.width; ++i) {
+          for (int j = 0; j < image.height; ++j) {
+              image2(image2.width - j - 1, i, 0) = image(i, j, 0);
+              image2(image2.width - j - 1, i, 1) = image(i, j, 1);
+              image2(image2.width - j - 1, i, 2) = image(i, j, 2);
+          }
+      }
+  }
+
+  cout << "Pls enter image name to store new image\n";
+  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
+
+  cin >> filename;
+  if (degree_rotate == 180) {
+      image3.saveImage(filename);
+  }
+  else {
+      image2.saveImage(filename);
+  }
 }
 
 void darken_lighten() {
@@ -223,9 +258,9 @@ void purple_look() {
 
 }
 
+
 int main(){
   cout << "welcome, that program add some filters to your picture,\n";
-
   while (true) {
     cout << "please choose filter: \n"
             "1)filter_1(gray_scale).\n"
@@ -233,26 +268,27 @@ int main(){
             "3)filter_3(invert_image).\n"
             "4)filter_4(merge_images).\n"
             "5)filter_7(darken_lighten).\n"
-            "6)filter_11(resizing_image)\n"
-            "7)filter_16(purple_look)\n"
-            "8)exit.\n";
+            "6)filter_6(rotate_image).\n"
+            "7)filter_11(Resizing Images).\n"
+            "8)filter_16(purple_look).\n"
+            "9)exit.\n";
     string choice = "";
     getline(cin, choice);
     if(choice.length() != 1) {choice = '9';}
-    if (choice[0] == '8') {break;}
+    if (choice[0] == '9') {break;}
     else if (choice[0] == '1') {gray_scale();}
     else if (choice[0] == '2') {black_and_white();}
     else if (choice[0] == '3') {invert_image();}
     else if (choice[0] == '4') {merge_images();}
     else if (choice[0] == '5') {darken_lighten();}
-    else if (choice[0] == '6') {resize();}
-    else if (choice[0] == '7') {purple_look();}
+    else if (choice[0] == '6') {rotate_image();}
+    else if (choice[0] == '7') {resize();}
+    else if (choice[0] == '8') {purple_look();}
     else {
       cout << "enter valid number,\n";
       continue;
     }
     cin.ignore();
   }
-
   return 0;
 }
