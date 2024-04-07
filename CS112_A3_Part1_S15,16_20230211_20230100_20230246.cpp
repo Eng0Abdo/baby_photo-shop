@@ -123,6 +123,60 @@ void merge_images() {
   new_image.saveImage(filename);
 }
 
+void rotate_image() {
+  string filename;
+  cout << "Pls enter colored image name to turn to rotate: ";
+  cin >> filename;
+
+  Image image(filename);
+
+  int degree_rotate = 0;
+  cout << "choose degree to rotate(90, 180, 270): ";
+  cin >> degree_rotate;
+  
+  Image image2(image.height, image.width);
+  Image image3(image.width, image.height);
+
+  if (degree_rotate == 270) {
+      for (int i = 0; i < image.width; ++i) {
+          for (int j = 0; j < image.height; ++j) {
+              image2(j, image2.height - i - 1, 0) = image(i, j, 0);
+              image2(j, image2.height - i - 1, 1) = image(i, j, 1);
+              image2(j, image2.height - i - 1, 2) = image(i, j, 2);
+          }
+      }
+  }
+  else if (degree_rotate == 180) {
+      for (int i = 0; i < image.width; ++i) {
+          for (int j = 0; j < image.height; ++j) {
+              image3(image3.width - i - 1, image3.height - j - 1, 0) = image(i, j, 0);
+              image3(image3.width - i - 1, image3.height - j - 1, 1) = image(i, j, 1);
+              image3(image3.width - i - 1, image3.height - j - 1, 2) = image(i, j, 2);
+          }
+      }
+  }
+  else {
+      for (int i = 0; i < image.width; ++i) {
+          for (int j = 0; j < image.height; ++j) {
+              image2(image2.width - j - 1, i, 0) = image(i, j, 0);
+              image2(image2.width - j - 1, i, 1) = image(i, j, 1);
+              image2(image2.width - j - 1, i, 2) = image(i, j, 2);
+          }
+      }
+  }
+
+  cout << "Pls enter image name to store new image\n";
+  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
+
+  cin >> filename;
+  if (degree_rotate == 180) {
+      image3.saveImage(filename);
+  }
+  else {
+      image2.saveImage(filename);
+  }
+}
+
 void darken_lighten() {
   string photo;
   cout << "please inter your coloured photo: ";
@@ -179,17 +233,19 @@ int main(){
             "2)filter_2(black_and_white).\n"
             "3)filter_3(invert_image).\n"
             "4)filter_4(merge_images).\n"
-            "5)filter_7(darken_lighten).\n"
-            "6)exit.\n";
+            "5)filter_6(rotate_image).\n"
+            "6)filter_7(darken_lighten).\n"
+            "7)exit.\n";
     string choice = "";
     getline(cin, choice);
     if(choice.length() != 1) {choice = '9';}
-    if (choice[0] == '6') {break;}
+    if (choice[0] == '7') {break;}
     else if (choice[0] == '1') {gray_scale();}
     else if (choice[0] == '2') {black_and_white();}
     else if (choice[0] == '3') {invert_image();}
     else if (choice[0] == '4') {merge_images();}
-    else if (choice[0] == '5') {darken_lighten();}
+    else if (choice[0] == '5') {rotate_image();}
+    else if (choice[0] == '6') {darken_lighten();}
     else {
       cout << "enter valid number,\n";
       continue;
