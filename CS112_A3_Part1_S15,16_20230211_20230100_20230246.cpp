@@ -104,6 +104,41 @@ void merge_images() {
   new_image.saveImage(filename);
 }
 
+void flip()
+{
+    string photoName;
+    cout << "Pls enter colored image name to flip it: ";
+    cin >> photoName;
+    string choice;
+    cout << "[a] to Flip Vertically";
+    cout << "\n[b] to Flip Horizontally\n";
+    cin >> choice;
+    Image image(photoName);
+    Image image1(photoName);
+    if (choice == "a"|| choice == "A") {
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {   
+                for(int k = 0; k < 3; ++k) { 
+                    image(i, j, k) = image1(i, image.height - j - 1, k);
+                }
+            }        
+        }
+    }
+    else if (choice == "b" || choice == "B"){
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {   
+                for(int k = 0; k < 3; ++k) { 
+                    image(i, j, k) = image1(image.width - i -1 , j ,k);
+                }
+            }        
+        }
+    }
+    cout << "Pls enter image name to store new image and specify extension .jpg, .bmp, .png, .tga: \n";
+
+    cin >> photoName;
+    image.saveImage(photoName);
+}
+
 void rotate_image() {
   string filename;
   cout << "Pls enter colored image name to turn to rotate: ";
@@ -202,7 +237,6 @@ void darken_lighten() {
           ".bmp, .png, .tga: \n";
   cin >> photoname;
   Photo.saveImage(photoname);
-  system(photoname.c_str());
 }
 
 void resize()
@@ -231,12 +265,11 @@ void resize()
   cout << "Pls enter image name to store new image and specify extension .jpg, .bmp, .png, .tga: \n";
     cin >> photoName;
     new_image.saveImage(photoName);
-    system(photoName.c_str());
 }
 
 void purple_look() {
     string filename;
-    cout << "Pls enter colored image name to turn to gray scale: ";
+    cout << "Pls enter colored image name to turn to make purple look: ";
     cin >> filename;
     Image image(filename);
     for (int i = 0; i < image.width; ++i) {
@@ -254,8 +287,6 @@ void purple_look() {
     cout << "Pls enter image name to store new image and specify extension .jpg, .bmp, .png, .tga: \n";
     cin >> filename;
     image.saveImage(filename);
-    system(filename.c_str());
-
 }
 
 
@@ -263,32 +294,34 @@ int main(){
   cout << "welcome, that program add some filters to your picture,\n";
   while (true) {
     cout << "please choose filter: \n"
-            "1)filter_1(gray_scale).\n"
-            "2)filter_2(black_and_white).\n"
-            "3)filter_3(invert_image).\n"
-            "4)filter_4(merge_images).\n"
-            "5)filter_7(darken_lighten).\n"
-            "6)filter_6(rotate_image).\n"
-            "7)filter_11(Resizing Images).\n"
-            "8)filter_16(purple_look).\n"
-            "9)exit.\n";
-    string choice = "";
-    getline(cin, choice);
-    if(choice.length() != 1) {choice = '9';}
-    if (choice[0] == '9') {break;}
-    else if (choice[0] == '1') {gray_scale();}
-    else if (choice[0] == '2') {black_and_white();}
-    else if (choice[0] == '3') {invert_image();}
-    else if (choice[0] == '4') {merge_images();}
-    else if (choice[0] == '5') {darken_lighten();}
-    else if (choice[0] == '6') {rotate_image();}
-    else if (choice[0] == '7') {resize();}
-    else if (choice[0] == '8') {purple_look();}
+            "a)filter_1(gray_scale).\n"
+            "b)filter_2(black_and_white).\n"
+            "c)filter_3(invert_image).\n"
+            "d)filter_4(merge_images).\n"
+            "e)filter_5(Flip Image).\n"
+            "f)filter_6(rotate_image).\n"
+            "g)filter_7(Darken and Lighten Image).\n"
+            "h)filter_11(resizing_image).\n"
+            "i)filter_16(purple_look).\n"
+            "j)exit.\n";
+    string choice;
+    cin >> choice;
+    cin.clear();
+    cin.ignore(100, '\n');
+    if (choice == "J"||choice == "j") {break;}
+    else if (choice == "A"||choice == "a") {gray_scale();}
+    else if (choice == "B"||choice == "b") {black_and_white();}
+    else if (choice == "C"||choice == "c") {invert_image();}
+    else if (choice == "D"||choice == "d") {merge_images();}
+    else if (choice == "E"||choice == "e") {flip();}
+    else if (choice == "F"||choice == "f") {rotate_image();}
+    else if (choice == "G"||choice == "g") {darken_lighten();}
+    else if (choice == "H"||choice == "h") {resize();}
+    else if (choice == "I"||choice == "i") {purple_look();}
     else {
-      cout << "enter valid number,\n";
+      cout << "enter valid choice,\n";
       continue;
     }
-    cin.ignore();
   }
   return 0;
 }
