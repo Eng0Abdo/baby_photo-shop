@@ -3,9 +3,12 @@
 // Filter 1: Grayscale Conversion & Filter 4: Merge Images        => by   Peter Girgs Sayed          ID:20230100     S:15,16
 // Filter 2: Black and White & Filter 7: Darken and Lighten Image => by   Abdelrhman Emad Mahmoud    ID:20230211     S:15,16
 // Filter 3: Invert Image                                         => by   Ammar Ali Ghazi            ID:20230246     S:15,16
+
 #include "Image_Class.h"
 #include <iostream>
+#include <random>
 using namespace std;
+
 void gray_scale() {
   string filename;
   cout << "Pls enter colored image name to turn to gray scale: ";
@@ -28,6 +31,7 @@ void gray_scale() {
   cin >> filename;
   image.saveImage(filename);
 }
+
 void black_and_white() {
   string photoName;
   cout << "Pls enter colored image name to turn to black and white: ";
@@ -54,6 +58,7 @@ void black_and_white() {
   cin >> photoName;
   image.saveImage(photoName);
 }
+
 void invert_image() {
   string filename;
   cout << "Pls enter colored image name to turn to inverted colors: ";
@@ -71,6 +76,7 @@ void invert_image() {
   cin >> filename;
   image.saveImage(filename);
 }
+
 void merge_images() {
   string filename_1;
   string filename_2;
@@ -104,8 +110,7 @@ void merge_images() {
   new_image.saveImage(filename);
 }
 
-void flip()
-{
+void flip() {
     string photoName;
     cout << "Pls enter colored image name to flip it: ";
     cin >> photoName;
@@ -239,8 +244,161 @@ void darken_lighten() {
   Photo.saveImage(photoname);
 }
 
-void resize()
-{
+void frame() {
+  string filename;
+    cout << "Pls enter colored image name to turn to gray scale: ";
+    cin >> filename;
+
+    Image image(filename);
+
+    for (int i = 0; i < image.width / 100; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+            image(i, j, 0) = 93;
+            image(i, j, 1) = 63;
+            image(i, j, 2) = 211;
+
+            image(image.width - i - 1, j, 0) = 93;
+            image(image.width - i - 1, j, 1) = 63;
+            image(image.width - i - 1, j, 2) = 211;
+        }
+    }
+
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height / 100; ++j) {
+            image(i, j, 0) = 93;
+            image(i, j, 1) = 63;
+            image(i, j, 2) = 211;
+
+            image(i, image.height - j - 1, 0) = 93;
+            image(i, image.height - j - 1, 1) = 63;
+            image(i, image.height - j - 1, 2) = 211;
+        }
+    }
+    
+    for (int j = 0; j < image.height; ++j) {
+            for (int k = 0; k < 3; ++k) {
+                image(0, j, k) = 255;
+                
+                image(image.width - 1, j, k) = 255;
+            }
+        }
+
+    for (int i = 0; i < image.width; ++i) {
+        for (int k = 0; k < 3; ++k) {
+            image(i, 0, k) = 255;
+
+            image(i, image.height - 1, k) = 255;
+        }
+        
+    }
+    
+    int simple_fancy = 0;
+    cout << "1)simple.\n2)fancy.\n>> ";
+    cin >> simple_fancy;
+
+    if (simple_fancy == 2) {
+        for (int j = 0; j < image.height; ++j) {
+            for (int k = 0; k < 3; ++k) {
+                image(image.width / 100, j, k) = 255;
+                
+                image(image.width - (image.width / 100) - 1, j, k) = 255;
+
+                image((image.width / 100) - 3, j, k) = 255;
+                
+                image(image.width - (image.width / 100) + 3 - 1, j, k) = 255;
+            }
+        }
+
+        for (int i = 0; i < image.width; ++i) {
+            for (int k = 0; k < 3; ++k) {
+                image(i, image.height / 100, k) = 255;
+                
+                image(i, image.height - (image.height / 100) - 1, k) = 255;
+
+                image(i, (image.height / 100) - 3, k) = 255;
+                
+                image(i, image.height - (image.height / 100) + 3 - 1, k) = 255;
+            }
+            
+        }
+
+        for (int i = image.width / 100; i < (image.width / 100) + 5; ++i) {
+            for (int j = image.height / 100; j < (image.height / 100) + 5; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    image(i, j, k) = 255;
+                    
+                    image(image.width - i - 1, j, k) = 255;
+
+                    image(i, image.height - j - 1, k) = 255;
+                    
+                    image(image.width - i - 1, image.height - j - 1, k) = 255;
+                }
+                
+            }
+        }
+    
+        for (int i = (image.width / 100) + 12; i < (image.width / 100) + 15; ++i) {
+            for (int j = image.height / 100; j < (image.height / 100) + 15; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    image(i, j, k) = 255;
+                    
+                    image(image.width - i - 1, j, k) = 255;
+
+                    image(i, image.height - j - 1, k) = 255;
+                    
+                    image(image.width - i - 1, image.height - j - 1, k) = 255;
+                }
+            }
+        }
+        
+        for (int i = image.width / 100; i < (image.width / 100) + 15; ++i) {
+            for (int j = (image.height / 100) + 12; j < (image.height / 100) + 15; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    image(i, j, k) = 255;
+                    
+                    image(image.width - i - 1, j, k) = 255;
+
+                    image(i, image.height - j - 1, k) = 255;
+                    
+                    image(image.width - i - 1, image.height - j - 1, k) = 255;
+                }
+            }
+        }
+    
+        for (int j = image.height / 100; j < (image.height / 100) + 8; ++j) {
+            for (int k = 0; k < 3; ++k) {
+                image((image.width / 100) + 8, j, k) = 255;
+                
+                image(image.width - (image.width / 100) - 8 - 1, j, k) = 255;
+
+                image((image.width / 100) + 8, image.height - j - 1, k) = 255;
+                
+                image(image.width - (image.width / 100) - 8 - 1, image.height - j - 1, k) = 255;
+            }
+        }
+
+        for (int i = image.width / 100; i < (image.width / 100) + 9; ++i) {
+            for (int k = 0; k < 3; ++k) {
+                image(i, (image.height / 100) + 8, k) = 255;
+                
+                image(i, image.height - (image.height / 100) - 8 - 1, k) = 255;
+
+                image(image.width - i - 1, (image.height / 100) + 8, k) = 255;
+                
+                image(image.width - i - 1, image.height - (image.height / 100) - 8 - 1, k) = 255;
+            }
+            
+        }
+    }
+
+    cout << "Pls enter image name to store new image\n";
+    cout << "and specify extension .jpg, .bmp, .png, .tga: ";
+
+    cin >> filename;
+    image.saveImage(filename);
+}
+
+void resize() {
     string photoName;
     cout << "Pls enter your image name to resize it: ";
     cin >> photoName;
@@ -265,6 +423,71 @@ void resize()
   cout << "Pls enter image name to store new image and specify extension .jpg, .bmp, .png, .tga: \n";
     cin >> photoName;
     new_image.saveImage(photoName);
+}
+
+void blur() {
+  string filename;
+    cout << "Pls enter colored image name to turn to blur: ";
+    cin >> filename;
+
+    Image image(filename);
+
+    int n = 3;
+    int count = (n + n) * (n + n);
+
+    for (int y = n; y < image.width - n; ++y) {
+        for (int x = n; x < image.height - n; ++x) {
+            for (int k = 0; k < 3; ++k){
+                int sum = 0;
+                for (int ky = -n; ky < n; ++ky) {
+                    for (int kx = -n; kx < n; kx++) {
+                        int ny = y + ky;
+                        int nx = x + kx;
+                        sum += image(ny, nx, k);
+                    }
+                }
+                image(y, x, k) = sum / count;
+            }
+        }
+    }
+
+    cout << "Pls enter image name to store new image\n";
+    cout << "and specify extension .jpg, .bmp, .png, .tga: ";
+
+    cin >> filename;
+    image.saveImage(filename);
+}
+
+int randomBetween(int low, int high) {
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(low, high);
+    return dis(gen);
+}
+
+void tv() {
+    string filename;
+    cout << "Pls enter colored image name to turn to gray scale: ";
+    getline(cin, filename);
+
+    Image image(filename);
+
+    for (int i = 0; i < image.width; i+=2) {
+        for (int j = 0; j < image.height; j+=2) {
+            for (int k = 0; k < 3; ++k) {
+                if (image(i, j, k) > 64) {
+                    image(i, j, k) = (image(i, j, k) + randomBetween(192, 255)) % 255;
+                }
+            }
+        }
+    }
+
+    cout << "Pls enter image name to store new image\n";
+    cout << "and specify extension .jpg, .bmp, .png, .tga: ";
+
+    getline(cin, filename);
+    image.saveImage(filename);
+
 }
 
 void purple_look() {
@@ -301,14 +524,17 @@ int main(){
             "e)filter_5(Flip Image).\n"
             "f)filter_6(rotate_image).\n"
             "g)filter_7(Darken and Lighten Image).\n"
-            "h)filter_11(resizing_image).\n"
-            "i)filter_16(purple_look).\n"
-            "j)exit.\n";
+            "h)filter_9(ِAdding a Frame to the Picture).\n"
+            "i)filter_11(resizing_image).\n"
+            "j)filter_12(Blur Images).\n"
+            "k)filter_15(TV images).\n"
+            "l)filter_16(purple_look).\n"
+            "m)exit.\n";
     string choice;
     cin >> choice;
     cin.clear();
     cin.ignore(100, '\n');
-    if (choice == "J"||choice == "j") {break;}
+    if (choice == "M"||choice == "m") {break;}
     else if (choice == "A"||choice == "a") {gray_scale();}
     else if (choice == "B"||choice == "b") {black_and_white();}
     else if (choice == "C"||choice == "c") {invert_image();}
@@ -316,8 +542,11 @@ int main(){
     else if (choice == "E"||choice == "e") {flip();}
     else if (choice == "F"||choice == "f") {rotate_image();}
     else if (choice == "G"||choice == "g") {darken_lighten();}
-    else if (choice == "H"||choice == "h") {resize();}
-    else if (choice == "I"||choice == "i") {purple_look();}
+    else if (choice == "H"||choice == "h") {frame();}
+    else if (choice == "I"||choice == "i") {resize();}
+    else if (choice == "J"||choice == "j") {blur();}
+    else if (choice == "K"||choice == "k") {tv();}
+    else if (choice == "L"||choice == "l") {purple_look();}
     else {
       cout << "enter valid choice,\n";
       continue;
