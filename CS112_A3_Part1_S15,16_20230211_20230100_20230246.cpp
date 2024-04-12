@@ -498,13 +498,24 @@ void purple_look() {
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
             unsigned int purple = 0; 
-            for (int k = 1; k < 3; ++k) {
-                purple += image(i, j, k);
-            }
+            
+            purple += image(i, j, 0);
+            purple += image(i, j, 2);
             purple /= 2;
-            for (int k = 1; k < 3; ++k) {
-                image(i, j, k) = purple;
-            }
+            if(purple > 255) {
+                purple = 255;
+            } 
+            image(i, j, 0) = purple;
+            image(i, j, 2) = purple;
+        }
+    }
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) { 
+            unsigned int red = image(i, j, 0)* 1.8;
+            if(red > 255) {
+                red = 255;
+            }     
+            image(i, j, 0) = red;
         }
     }
     cout << "Pls enter image name to store new image and specify extension .jpg, .bmp, .png, .tga: \n";
