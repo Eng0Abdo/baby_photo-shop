@@ -570,26 +570,36 @@ void tv() {
 }
 
 void purple_look() {
-  string filename;
-  cout << "Pls enter colored image name to turn to make purple look: ";
-  cin >> filename;
-  Image image(filename);
-  for (int i = 0; i < image.width; ++i) {
-    for (int j = 0; j < image.height; ++j) {
-      unsigned int purple = 0;
-      for (int k = 1; k < 3; ++k) {
-        purple += image(i, j, k);
-      }
-      purple /= 2;
-      for (int k = 1; k < 3; ++k) {
-        image(i, j, k) = purple;
-      }
+    string filename;
+    cout << "Pls enter colored image name to turn to make purple look: ";
+    cin >> filename;
+    Image image(filename);
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+            unsigned int purple = 0; 
+            
+            purple += image(i, j, 0);
+            purple += image(i, j, 2);
+            purple /= 2;
+            if(purple > 255) {
+                purple = 255;
+            } 
+            image(i, j, 0) = purple;
+            image(i, j, 2) = purple;
+        }
     }
-  }
-  cout << "Pls enter image name to store new image and specify extension .jpg, "
-          ".bmp, .png, .tga: \n";
-  cin >> filename;
-  image.saveImage(filename);
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) { 
+            unsigned int red = image(i, j, 0)* 1.8;
+            if(red > 255) {
+                red = 255;
+            }     
+            image(i, j, 0) = red;
+        }
+    }
+    cout << "Pls enter image name to store new image and specify extension .jpg, .bmp, .png, .tga: \n";
+    cin >> filename;
+    image.saveImage(filename);
 }
 
 int main() {
