@@ -281,45 +281,49 @@ Image frame(string photoName) {
   Image image(photoName);
 
   for (int i = 0; i < image.width / 100; ++i) {
-    for (int j = 0; j < image.height; ++j) {
-      image(i, j, 0) = 93;
-      image(i, j, 1) = 63;
-      image(i, j, 2) = 211;
+        for (int j = 0; j < image.height; ++j) {
+            image(i, j, 0) = 93;
+            image(i, j, 1) = 63;
+            image(i, j, 2) = 211;
 
-      image(image.width - i - 1, j, 0) = 93;
-      image(image.width - i - 1, j, 1) = 63;
-      image(image.width - i - 1, j, 2) = 211;
+            image(image.width - i - 1, j, 0) = 93;
+            image(image.width - i - 1, j, 1) = 63;
+            image(image.width - i - 1, j, 2) = 211;
+        }
     }
+
+  for (int i = 0; i < image.width; ++i) {
+      for (int j = 0; j < image.height / 100; ++j) {
+          image(i, j, 0) = 93;
+          image(i, j, 1) = 63;
+          image(i, j, 2) = 211;
+
+          image(i, image.height - j - 1, 0) = 93;
+          image(i, image.height - j - 1, 1) = 63;
+          image(i, image.height - j - 1, 2) = 211;
+      }
+  }
+  
+  for (int i = 0; i < (image.width / 1000) + 1; ++i) {
+      for (int j = 0; j < image.height; ++j) {
+          for (int k = 0; k < 3; ++k) {
+              image(i, j, k) = 255;
+              
+              image(image.width - i - 1, j, k) = 255;
+          }
+      }
   }
 
   for (int i = 0; i < image.width; ++i) {
-    for (int j = 0; j < image.height / 100; ++j) {
-      image(i, j, 0) = 93;
-      image(i, j, 1) = 63;
-      image(i, j, 2) = 211;
+      for (int j = 0; j < (image.height / 1000) + 1; ++j) {
+          for (int k = 0; k < 3; ++k) {
+              image(i, j, k) = 255;
 
-      image(i, image.height - j - 1, 0) = 93;
-      image(i, image.height - j - 1, 1) = 63;
-      image(i, image.height - j - 1, 2) = 211;
-    }
+              image(i, image.height - j - 1, k) = 255;
+          }
+      }
   }
-
-  for (int j = 0; j < image.height; ++j) {
-    for (int k = 0; k < 3; ++k) {
-      image(0, j, k) = 255;
-
-      image(image.width - 1, j, k) = 255;
-    }
-  }
-
-  for (int i = 0; i < image.width; ++i) {
-    for (int k = 0; k < 3; ++k) {
-      image(i, 0, k) = 255;
-
-      image(i, image.height - 1, k) = 255;
-    }
-  }
-
+  
   int simple_fancy = 0;
   while (1) {
     string input = "";
@@ -335,28 +339,32 @@ Image frame(string photoName) {
   }
 
   if (simple_fancy == 2) {
-    for (int j = 0; j < image.height; ++j) {
-      for (int k = 0; k < 3; ++k) {
-        image(image.width / 100, j, k) = 255;
+    for (int i = 0; i < (image.width / 1000) + 1; ++i) { // vertical two lines
+        for (int j = 0; j < image.height; ++j) {
+            for (int k = 0; k < 3; ++k) {
+                image((image.width / 100) + i, j, k) = 255;
+                
+                image(image.width - i -(image.width / 100) - 1, j, k) = 255;
 
-        image(image.width - (image.width / 100) - 1, j, k) = 255;
-
-        image((image.width / 100) - 3, j, k) = 255;
-
-        image(image.width - (image.width / 100) + 3 - 1, j, k) = 255;
-      }
+                image((image.width / 100) + i - ((image.width / 100) / 2), j, k) = 255;
+                
+                image(image.width - (image.width / 100) - i + ((image.width / 100) / 2) - 1, j, k) = 255;
+            }
+        }
     }
 
-    for (int i = 0; i < image.width; ++i) {
-      for (int k = 0; k < 3; ++k) {
-        image(i, image.height / 100, k) = 255;
+    for (int i = 0; i < image.width; ++i) {  // hotizontal two lines
+        for (int j = 0; j < (image.height / 1000) + 1; ++j) {
+            for (int k = 0; k < 3; ++k) {
+                image(i, (image.height / 100) + j, k) = 255;
+                
+                image(i, image.height - j - (image.height / 100) - 1, k) = 255;
 
-        image(i, image.height - (image.height / 100) - 1, k) = 255;
-
-        image(i, (image.height / 100) - 3, k) = 255;
-
-        image(i, image.height - (image.height / 100) + 3 - 1, k) = 255;
-      }
+                image(i, (image.height / 100) + j - ((image.height / 100) / 2), k) = 255;
+                
+                image(i, image.height - (image.height / 100) - j + ((image.height / 100) / 2) - 1, k) = 255;
+            }
+        }
     }
 
     for (int i = image.width / 100; i < (image.width / 100) + 5; ++i) {
