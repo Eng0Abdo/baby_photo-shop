@@ -13,6 +13,36 @@
 #include <string>
 
 using namespace std;
+void choose_ext(string & extension) {
+    cout << "inter photo name to store it: ";
+    cin >> extension;
+    cout << "choose extension:  [a] jpg     [b] bmp     [c] png     [d] tga\n";
+    while (true)
+    {
+        string choice;
+        cin >> choice;
+        if(choice == "a"|| choice == "A") {
+            extension += ".jpg";
+            break;
+        }
+        else if(choice == "b"|| choice == "B") {
+            extension += ".bmp";
+            break;
+        }
+        else if(choice == "c"|| choice == "C") {
+            extension += ".png";
+            break;
+        }
+        else if(choice == "d"|| choice == "D") {
+            extension += ".tga";
+            break;
+        }
+        else {
+            cout << "enter a valid choice \n";
+        }
+        cin.ignore();
+    }
+}
 
 void gray_scale() {
   string filename;
@@ -37,10 +67,7 @@ void gray_scale() {
   image.saveImage(filename);
 }
 
-void black_and_white() {
-  string photoName;
-  cout << "Pls enter colored image name to turn to black and white: ";
-  cin >> photoName;
+Image black_and_white(string photoName) {
   Image image(photoName);
   for (int i = 0; i < image.width; ++i) {
     for (int j = 0; j < image.height; ++j) {
@@ -58,10 +85,7 @@ void black_and_white() {
       }
     }
   }
-  cout << "Pls enter image name to store new image\n";
-  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-  cin >> photoName;
-  image.saveImage(photoName);
+  return image;
 }
 
 void invert_image() {
@@ -115,10 +139,7 @@ void merge_images() {
   new_image.saveImage(filename);
 }
 
-void flip() {
-  string photoName;
-  cout << "Pls enter colored image name to flip it: ";
-  cin >> photoName;
+Image flip(string photoName) {
   string choice;
   cout << "[a] to Flip Vertically";
   cout << "\n[b] to Flip Horizontally\n";
@@ -142,11 +163,7 @@ void flip() {
       }
     }
   }
-  cout << "Pls enter image name to store new image and specify extension .jpg, "
-          ".bmp, .png, .tga: \n";
-
-  cin >> photoName;
-  image.saveImage(photoName);
+  return image;
 }
 
 void rotate_image() {
@@ -200,10 +217,7 @@ void rotate_image() {
   }
 }
 
-void darken_lighten() {
-  string photo;
-  cout << "please inter your coloured photo: ";
-  cin >> photo;
+Image darken_lighten(string photo) {
   Image Photo(photo);
   string choice;
   cout << "please inter what do you want \n";
@@ -239,11 +253,7 @@ void darken_lighten() {
       }
     }
   }
-  string photoname;
-  cout << "Pls enter image name to store new image and specify extension .jpg, "
-          ".bmp, .png, .tga: \n";
-  cin >> photoname;
-  Photo.saveImage(photoname);
+  return Photo;
 }
 
 void crop() {
@@ -474,10 +484,7 @@ void detect_image_edges() {
   edges.saveImage(filename);
 }
 
-void resize() {
-  string photoName;
-  cout << "Pls enter your image name to resize it: ";
-  cin >> photoName;
+Image resize(string photoName) {
   Image image(photoName);
   int new_width, new_height;
   cout << "pls enter your photo width\n";
@@ -499,10 +506,7 @@ void resize() {
     }
   }
 
-  cout << "Pls enter image name to store new image and specify extension .jpg, "
-          ".bmp, .png, .tga: \n";
-  cin >> photoName;
-  new_image.saveImage(photoName);
+  return new_image;
 }
 
 void blur() {
@@ -569,10 +573,7 @@ void tv() {
   image.saveImage(filename);
 }
 
-void purple_look() {
-    string filename;
-    cout << "Pls enter colored image name to turn to make purple look: ";
-    cin >> filename;
+Image purple_look(string filename) {
     Image image(filename);
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
@@ -597,68 +598,102 @@ void purple_look() {
             image(i, j, 0) = red;
         }
     }
-    cout << "Pls enter image name to store new image and specify extension .jpg, .bmp, .png, .tga: \n";
-    cin >> filename;
-    image.saveImage(filename);
+  return image;
 }
 
 int main() {
   cout << "welcome, that program add some filters to your picture,\n";
-  while (true) {
-    cout << "please choose filter: \n"
-            "a)filter_1(gray_scale).\n"
-            "b)filter_2(black_and_white).\n"
-            "c)filter_3(invert_image).\n"
-            "d)filter_4(merge_images).\n"
-            "e)filter_5(Flip Image).\n"
-            "f)filter_6(rotate_image).\n"
-            "g)filter_7(Darken and Lighten Image).\n"
-            "h)filter_8(crop).\n"
-            "i)filter_9(ِAdding a Frame to the Picture).\n"
-            "j)filter_10(ِdetect image edges).\n"
-            "k)filter_11(resizing_image).\n"
-            "l)filter_12(Blur Images).\n"
-            "m)filter_15(TV images).\n"
-            "n)filter_16(purple_look).\n"
-            "o)exit.\n";
+  Image image;
+  string filename1;
+  while (true)
+  {
     string choice;
+    cout << "choose what do you want [a] load image  [b] exit\n";
     cin >> choice;
-    cin.clear();
-    cin.ignore(100, '\n');
-    if (choice == "M" || choice == "m") {
-      break;
-    } else if (choice == "A" || choice == "a") {
-      gray_scale();
-    } else if (choice == "B" || choice == "b") {
-      black_and_white();
-    } else if (choice == "C" || choice == "c") {
-      invert_image();
-    } else if (choice == "D" || choice == "d") {
-      merge_images();
-    } else if (choice == "E" || choice == "e") {
-      flip();
-    } else if (choice == "F" || choice == "f") {
-      rotate_image();
-    } else if (choice == "G" || choice == "g") {
-      darken_lighten();
-    } else if (choice == "H" || choice == "h") {
-      crop();
-    } else if (choice == "I" || choice == "i") {
-      frame();
-    } else if (choice == "J" || choice == "j") {
-      detect_image_edges();
-    } else if (choice == "K" || choice == "k") {
-      resize();
-    } else if (choice == "L" || choice == "l") {
-      blur();
-    } else if (choice == "M" || choice == "m") {
-      tv();
-    } else if (choice == "n" || choice == "n") {
-      purple_look();
-    } else {
-      cout << "enter valid choice,\n";
-      continue;
+    if(choice == "a" || choice == "A") {
+      while (true) {  
+        cout << "Pls enter your photo name to edit it: ";
+        cin >> filename1;
+        try {
+
+            if(image.loadNewImage(filename1)) {
+                break;
+            }
+        }
+        catch(...) {
+        }
+        cin.ignore();
+      }
+
+      while (true) {
+        cout << "please choose filter: \n"
+              "a)filter_1(gray_scale).                  b)filter_2(black_and_white).   c)filter_3(invert_image).\n"
+              "d)filter_4(merge_images).                e)filter_5(Flip Image).        f)filter_6(rotate_image).\n"
+              "g)filter_7(Darken and Lighten Image).    h)filter_8(crop).              i)filter_9(ِAdding a Frame ).\n"
+              "j)filter_10(ِdetect image edges).         k)filter_11(resizing_image).   l)filter_12(Blur Images).\n"
+              "m)filter_15(TV images).                  n)filter_16(purple_look).      o)exit.\n";
+        string choice;
+        cin >> choice;
+        cin.clear();
+        cin.ignore(100, '\n');
+        if (choice == "M" || choice == "m") {
+          break;
+        } else if (choice == "A" || choice == "a") {
+          gray_scale();
+        } else if (choice == "B" || choice == "b") {
+          image = black_and_white(filename1);
+          string extension = "";
+          choose_ext(extension);
+          image.saveImage(extension);
+        } else if (choice == "C" || choice == "c") {
+          invert_image();
+        } else if (choice == "D" || choice == "d") {
+          merge_images();
+        } else if (choice == "E" || choice == "e") {
+          image = flip(filename1);
+          string extension = "";
+          choose_ext(extension);
+          image.saveImage(extension);
+        } else if (choice == "F" || choice == "f") {
+          rotate_image();
+        } else if (choice == "G" || choice == "g") {
+          image = darken_lighten(filename1);
+          string extension = "";
+          choose_ext(extension);
+          image.saveImage(extension);
+        } else if (choice == "H" || choice == "h") {
+          crop();
+        } else if (choice == "I" || choice == "i") {
+          frame();
+        } else if (choice == "J" || choice == "j") {
+          detect_image_edges();
+        } else if (choice == "K" || choice == "k") {
+          image = resize(filename1);
+          string extension = "";
+          choose_ext(extension);
+          image.saveImage(extension);
+        } else if (choice == "L" || choice == "l") {
+          blur();
+        } else if (choice == "M" || choice == "m") {
+          tv();
+        } else if (choice == "n" || choice == "n") {
+          image = purple_look(filename1);
+          string extension = "";
+          choose_ext(extension);    
+          image.saveImage(extension);
+        } else if (choice == "o" || choice == "O") {
+          break;
+        }
+        else {
+          cout << "enter valid choice,\n";
+          continue;
+        }
+      }
     }
+    else if(choice == "b" || choice == "B") {
+      break;
+    }
+
   }
   return 0;
 }
