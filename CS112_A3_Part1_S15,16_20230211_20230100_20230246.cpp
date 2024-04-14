@@ -641,26 +641,65 @@ int main() {
         } else if (choice == "A" || choice == "a") {
           gray_scale();
         } else if (choice == "B" || choice == "b") {
-          image = black_and_white(filename1);
-          string extension = "";
-          choose_ext(extension);
-          image.saveImage(extension);
+          string extension = "";    
+          cout << "\n[a] continue editing   [b]save and return to start menu   [c] don't save\n";
+          string choice1;
+          cin >> choice1;
+          if(choice1 == "a"|| choice1 == "A") {
+            image = black_and_white(filename1);
+            continue;
+          }
+          else if(choice1 == "b" || choice1 == "B") {
+            image = black_and_white(filename1);
+            choose_ext(extension);
+            image.saveImage(extension);
+            break;
+          }
+          else {
+            break;
+          }
         } else if (choice == "C" || choice == "c") {
           invert_image();
         } else if (choice == "D" || choice == "d") {
           merge_images();
         } else if (choice == "E" || choice == "e") {
-          image = flip(filename1);
-          string extension = "";
-          choose_ext(extension);
-          image.saveImage(extension);
+          string extension = "";    
+          cout << "\n[a] continue editing   [b]save and return to start menu   [c] don't save\n";
+          string choice1;
+          cin >> choice1;
+          if(choice1 == "a"|| choice1 == "A") {
+            image = flip(filename1);
+            continue;
+          }
+          else if(choice1 == "b" || choice1 == "B") {
+            image = flip(filename1);
+            choose_ext(extension);
+            image.saveImage(extension);
+            break;
+          }
+          else {
+            break;
+          }
         } else if (choice == "F" || choice == "f") {
           rotate_image();
         } else if (choice == "G" || choice == "g") {
-          image = darken_lighten(filename1);
-          string extension = "";
-          choose_ext(extension);
-          image.saveImage(extension);
+          string extension = "";    
+          cout << "\n[a] continue editing   [b]save and return to start menu   [c] don't save\n";
+          string choice1;
+          cin >> choice1;
+          if(choice1 == "a"|| choice1 == "A") {
+            image = darken_lighten(filename1);
+            continue;
+          }
+          else if(choice1 == "b" || choice1 == "B") {
+            image = darken_lighten(filename1);
+            choose_ext(extension);
+            image.saveImage(extension);
+            break;
+          }
+          else {
+            break;
+          }
         } else if (choice == "H" || choice == "h") {
           crop();
         } else if (choice == "I" || choice == "i") {
@@ -668,19 +707,46 @@ int main() {
         } else if (choice == "J" || choice == "j") {
           detect_image_edges();
         } else if (choice == "K" || choice == "k") {
-          image = resize(filename1);
-          string extension = "";
-          choose_ext(extension);
-          image.saveImage(extension);
+          string extension = "";    
+          cout << "\n[a] continue editing   [b]save and return to start menu   [c] don't save\n";
+          string choice1;
+          cin >> choice1;
+          if(choice1 == "a"|| choice1 == "A") {
+            image = resize(filename1);
+            continue;
+          }
+          else if(choice1 == "b" || choice1 == "B") {
+            image = resize(filename1);
+            choose_ext(extension);
+            image.saveImage(extension);
+            break;
+          }
+          else {
+            break;
+          }
         } else if (choice == "L" || choice == "l") {
           blur();
         } else if (choice == "M" || choice == "m") {
           tv();
         } else if (choice == "n" || choice == "n") {
-          image = purple_look(filename1);
-          string extension = "";
-          choose_ext(extension);    
-          image.saveImage(extension);
+          string extension = "";    
+          cout << "\n[a] continue editing   [b]save and return to start menu   [c] don't save\n";
+          string choice1;
+          cin >> choice1;
+          if(choice1 == "a"|| choice1 == "A") {
+            image = purple_look(filename1);
+            continue;
+          }
+          else if(choice1 == "b" || choice1 == "B") {
+            image = purple_look(filename1);
+            choose_ext(extension);
+            image.saveImage(extension);
+            break;
+          }
+          else {
+            break;
+          }
+
         } else if (choice == "o" || choice == "O") {
           break;
         }
