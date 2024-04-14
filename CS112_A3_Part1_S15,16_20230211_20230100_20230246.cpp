@@ -11,16 +11,16 @@
 #include <iostream>
 #include <random>
 #include <string>
-
 using namespace std;
+
 void choose_ext(string & extension) {
     cout << "inter photo name to store it: ";
-    cin >> extension;
+    getline(cin, extension);
     cout << "choose extension:  [a] jpg     [b] bmp     [c] png     [d] tga\n";
     while (true)
     {
         string choice;
-        cin >> choice;
+        getline(cin, choice);
         if(choice == "a"|| choice == "A") {
             extension += ".jpg";
             break;
@@ -88,11 +88,8 @@ Image black_and_white(string photoName) {
   return image;
 }
 
-void invert_image() {
-  string filename;
-  cout << "Pls enter colored image name to turn to inverted colors: ";
-  cin >> filename;
-  Image image(filename);
+Image invert_image(string photoName) {
+  Image image(photoName);
   for (int i = 0; i < image.width; ++i) {
     for (int j = 0; j < image.height; ++j) {
       for (int k = 0; k < 3; ++k) {
@@ -100,10 +97,7 @@ void invert_image() {
       }
     }
   }
-  cout << "Pls enter image name to store new image\n";
-  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-  cin >> filename;
-  image.saveImage(filename);
+  return image;
 }
 
 void merge_images() {
@@ -166,21 +160,35 @@ Image flip(string photoName) {
   return image;
 }
 
-void rotate_image() {
-  string filename;
-  cout << "Pls enter colored image name to turn to rotate: ";
-  cin >> filename;
+bool isNumber (string s) {
+  for (char c : s) {
+    if (!isdigit(c)) {
+      return false;
+    }
+  }
+  return true;
+}
 
-  Image image(filename);
+Image rotate_image(string photoName) {
+  Image image(photoName);
 
+  // get rotate degree
   int degree_rotate = 0;
-  cout << "choose degree to rotate(90, 180, 270): ";
-  cin >> degree_rotate;
-
-  Image image2(image.height, image.width);
-  Image image3(image.width, image.height);
+  while (1) { // check validity of degree rotate
+    string input = "";
+    cout << "choose degree to rotate(90, 180, 270): ";
+    getline(cin, input);
+    if (isNumber(input) && (stoi(input) == 90 || stoi(input) == 180 || stoi(input) == 270)) {
+        degree_rotate = stoi(input);
+        break;
+    }
+    else {
+      cout << "# choose a valid degree," << endl;
+    }
+  }
 
   if (degree_rotate == 270) {
+    Image image2(image.height, image.width);
     for (int i = 0; i < image.width; ++i) {
       for (int j = 0; j < image.height; ++j) {
         image2(j, image2.height - i - 1, 0) = image(i, j, 0);
@@ -188,7 +196,9 @@ void rotate_image() {
         image2(j, image2.height - i - 1, 2) = image(i, j, 2);
       }
     }
+    return image2;
   } else if (degree_rotate == 180) {
+    Image image3(image.width, image.height);
     for (int i = 0; i < image.width; ++i) {
       for (int j = 0; j < image.height; ++j) {
         image3(image3.width - i - 1, image3.height - j - 1, 0) = image(i, j, 0);
@@ -196,7 +206,9 @@ void rotate_image() {
         image3(image3.width - i - 1, image3.height - j - 1, 2) = image(i, j, 2);
       }
     }
+    return image3;
   } else {
+    Image image2(image.height, image.width);
     for (int i = 0; i < image.width; ++i) {
       for (int j = 0; j < image.height; ++j) {
         image2(image2.width - j - 1, i, 0) = image(i, j, 0);
@@ -204,16 +216,7 @@ void rotate_image() {
         image2(image2.width - j - 1, i, 2) = image(i, j, 2);
       }
     }
-  }
-
-  cout << "Pls enter image name to store new image\n";
-  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-
-  cin >> filename;
-  if (degree_rotate == 180) {
-    image3.saveImage(filename);
-  } else {
-    image2.saveImage(filename);
+    return image2;
   }
 }
 
@@ -274,12 +277,8 @@ void crop() {
   cropped_image.saveImage("cropped.png");
 }
 
-void frame() {
-  string filename;
-  cout << "Pls enter colored image name to turn to gray scale: ";
-  cin >> filename;
-
-  Image image(filename);
+Image frame(string photoName) {
+  Image image(photoName);
 
   for (int i = 0; i < image.width / 100; ++i) {
     for (int j = 0; j < image.height; ++j) {
@@ -322,8 +321,18 @@ void frame() {
   }
 
   int simple_fancy = 0;
-  cout << "1)simple.\n2)fancy.\n>> ";
-  cin >> simple_fancy;
+  while (1) {
+    string input = "";
+    cout << "1)simple.\n2)fancy.\n>> ";
+    getline(cin, input);
+    if (isNumber(input) && (stoi(input) == 1 || stoi(input) == 2)) {
+        simple_fancy = stoi(input);
+        break;
+    }
+    else {
+      cout << "# choose a valid choice," << endl;
+    }
+  }
 
   if (simple_fancy == 2) {
     for (int j = 0; j < image.height; ++j) {
@@ -420,11 +429,7 @@ void frame() {
     }
   }
 
-  cout << "Pls enter image name to store new image\n";
-  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-
-  cin >> filename;
-  image.saveImage(filename);
+  return image;
 }
 
 void detect_image_edges() {
@@ -509,22 +514,17 @@ Image resize(string photoName) {
   return new_image;
 }
 
-void blur() {
-  string filename;
-  cout << "Pls enter colored image name to turn to blur: ";
-  cin >> filename;
-
-  Image image(filename);
-
-  int n = 3;
-  int count = (n + n) * (n + n);
+Image blur(string photoName) {
+  Image image(photoName);
+  int n = 3; // Blur radius
+  int count = ((2 * n) + 1) * ((2 * n) + 1); // kernal size
 
   for (int y = n; y < image.width - n; ++y) {
     for (int x = n; x < image.height - n; ++x) {
       for (int k = 0; k < 3; ++k) {
         int sum = 0;
-        for (int ky = -n; ky < n; ++ky) {
-          for (int kx = -n; kx < n; kx++) {
+        for (int ky = -n; ky <= n; ++ky) {
+          for (int kx = -n; kx <= n; kx++) {
             int ny = y + ky;
             int nx = x + kx;
             sum += image(ny, nx, k);
@@ -535,11 +535,7 @@ void blur() {
     }
   }
 
-  cout << "Pls enter image name to store new image\n";
-  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-
-  cin >> filename;
-  image.saveImage(filename);
+  return image;
 }
 
 int randomBetween(int low, int high) {
@@ -549,12 +545,8 @@ int randomBetween(int low, int high) {
   return dis(gen);
 }
 
-void tv() {
-  string filename;
-  cout << "Pls enter colored image name to turn to gray scale: ";
-  getline(cin, filename);
-
-  Image image(filename);
+Image tv(string photoName) {
+  Image image(photoName);
 
   for (int i = 0; i < image.width; i += 2) {
     for (int j = 0; j < image.height; j += 2) {
@@ -566,11 +558,7 @@ void tv() {
     }
   }
 
-  cout << "Pls enter image name to store new image\n";
-  cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-
-  getline(cin, filename);
-  image.saveImage(filename);
+  return image;
 }
 
 Image purple_look(string filename) {
@@ -608,14 +596,13 @@ int main() {
   while (true)
   {
     string choice;
-    cout << "choose what do you want [a] load image  [b] exit\n";
-    cin >> choice;
+    cout << "choose what do you want [a] load image  [b] exit.\n>> ";
+    getline(cin, choice);
     if(choice == "a" || choice == "A") {
       while (true) {  
         cout << "Pls enter your photo name to edit it: ";
-        cin >> filename1;
+        getline(cin, filename1);
         try {
-
             if(image.loadNewImage(filename1)) {
                 break;
             }
@@ -636,7 +623,7 @@ int main() {
         cin >> choice;
         cin.clear();
         cin.ignore(100, '\n');
-        if (choice == "M" || choice == "m") {
+        if (choice == "o" || choice == "O") {
           break;
         } else if (choice == "A" || choice == "a") {
           gray_scale();
@@ -659,7 +646,23 @@ int main() {
             break;
           }
         } else if (choice == "C" || choice == "c") {
-          invert_image();
+          string extension = "";    
+          string choice1;
+          cout << "[a] continue editing   [b]save and return to start menu   [c] don't save.\n>> ";
+          getline(cin, choice1);
+          if(choice1 == "a"|| choice1 == "A") {
+            image = invert_image(filename1);
+            continue;
+          }
+          else if(choice1 == "b" || choice1 == "B") {
+            image = invert_image(filename1);
+            choose_ext(extension);
+            image.saveImage(extension);
+            break;
+          }
+          else {
+            break;
+          }
         } else if (choice == "D" || choice == "d") {
           merge_images();
         } else if (choice == "E" || choice == "e") {
@@ -681,7 +684,24 @@ int main() {
             break;
           }
         } else if (choice == "F" || choice == "f") {
-          rotate_image();
+          string extension = "";    
+          string choice1;
+          cout << "[a] continue editing   [b]save and return to start menu   [c] don't save.\n>> ";
+          getline(cin, choice1);
+          if(choice1 == "a"|| choice1 == "A") {
+            image = rotate_image(filename1);
+            continue;
+          }
+          else if(choice1 == "b" || choice1 == "B") {
+            image = rotate_image(filename1);
+            choose_ext(extension);
+            image.saveImage(extension);
+            break;
+          }
+          else {
+            break;
+          }
+          
         } else if (choice == "G" || choice == "g") {
           string extension = "";    
           cout << "\n[a] continue editing   [b]save and return to start menu   [c] don't save\n";
@@ -703,7 +723,23 @@ int main() {
         } else if (choice == "H" || choice == "h") {
           crop();
         } else if (choice == "I" || choice == "i") {
-          frame();
+          string extension = "";    
+          cout << "[a] continue editing   [b]save and return to start menu   [c] don't save.\n>> ";
+          string choice1;
+          getline(cin, choice1);
+          if(choice1 == "a"|| choice1 == "A") {
+            image = frame(filename1);
+            continue;
+          }
+          else if(choice1 == "b" || choice1 == "B") {
+            image = frame(filename1);
+            choose_ext(extension);
+            image.saveImage(extension);
+            break;
+          }
+          else {
+            break;
+          }
         } else if (choice == "J" || choice == "j") {
           detect_image_edges();
         } else if (choice == "K" || choice == "k") {
@@ -725,9 +761,41 @@ int main() {
             break;
           }
         } else if (choice == "L" || choice == "l") {
-          blur();
+          string extension = "";    
+          cout << "[a] continue editing   [b]save and return to start menu   [c] don't save.\n>> ";
+          string choice1;
+          getline(cin, choice1);
+          if(choice1 == "a"|| choice1 == "A") {
+            image = blur(filename1);
+            continue;
+          }
+          else if(choice1 == "b" || choice1 == "B") {
+            image = blur(filename1);
+            choose_ext(extension);
+            image.saveImage(extension);
+            break;
+          }
+          else {
+            break;
+          }
         } else if (choice == "M" || choice == "m") {
-          tv();
+          string extension = "";    
+          cout << "\n[a] continue editing   [b]save and return to start menu   [c] don't save\n";
+          string choice1;
+          cin >> choice1;
+          if(choice1 == "a"|| choice1 == "A") {
+            image = tv(filename1);
+            continue;
+          }
+          else if(choice1 == "b" || choice1 == "B") {
+            image = tv(filename1);
+            choose_ext(extension);
+            image.saveImage(extension);
+            break;
+          }
+          else {
+            break;
+          }
         } else if (choice == "n" || choice == "n") {
           string extension = "";    
           cout << "\n[a] continue editing   [b]save and return to start menu   [c] don't save\n";
@@ -746,12 +814,8 @@ int main() {
           else {
             break;
           }
-
-        } else if (choice == "o" || choice == "O") {
-          break;
-        }
-        else {
-          cout << "enter valid choice,\n";
+        } else {
+          cout << "# enter valid choice,\n";
           continue;
         }
       }
@@ -759,7 +823,9 @@ int main() {
     else if(choice == "b" || choice == "B") {
       break;
     }
-
+    else {
+      cout << "# enter valid choice," << endl;
+    }
   }
   return 0;
 }
