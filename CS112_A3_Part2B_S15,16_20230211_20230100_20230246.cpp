@@ -9,7 +9,6 @@
 // Filters (black and white & Flip Image & darken and lighten & resizing & purple look)   made by  Abdelrhman Emad Mahmoud
 // Filters (invert IMage & rotate Image & add frame & Blur & TV IMages)                   made by  Ammar Ali Ghazi
 
-
 #include "Image_Class.h"
 #include <cmath>
 #include <iostream>
@@ -516,7 +515,6 @@ int randomBetween(int low, int high) {
 
 // function to apply old TV noise filter
 Image tv(Image &image) {
-
   for (int i = 0; i < image.width; i += 2) {
     for (int j = 0; j < image.height; j += 2) {
       for (int k = 0; k < 3; ++k) {
@@ -526,7 +524,6 @@ Image tv(Image &image) {
       }
     }
   }
-
   return image;
 }
 
@@ -624,10 +621,10 @@ int main() {
         cout << "please choose filter: \n"
                 "a)filter_1(gray_scale).                  ""b)filter_2(black_and_white).   c)filter_3(invert_image).\n"
                 "d)filter_4(merge_images).                e)filter_5(Flip ""Image).        f)filter_6(rotate_image).\n"
-                "g)filter_7(Darken and Lighten Image).    h)filter_8(crop).    ""          i)filter_9(ِAdding a Frame ).\n"
+                "g)filter_7(Darken and Lighten Image).    h)filter_8(crop).    ""          i)filter_9(ِAdding a Frame).\n"
                 "j)filter_10(detect image edges).         ""k)filter_11(resizing_image).   l)filter_12(Blur Images).\n"
                 "m)filter_15(TV images).                  ""n)filter_16(purple_look).      o)skew_18.\n"
-                "p) exit \n";
+                "p) exit \n>> ";
         string choice;
         cin >> choice;
         cin.clear();
@@ -669,7 +666,7 @@ int main() {
           continue;
         }
 
-        cout << "\n[a] continue editing   [b]save and return to start menu   "
+        cout << "[a] continue editing   [b]save and return to start menu   "
                 "[c] don't save\n";
         string choice1;
         cin >> choice1;
