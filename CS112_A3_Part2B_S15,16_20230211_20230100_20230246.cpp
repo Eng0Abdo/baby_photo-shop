@@ -1,10 +1,14 @@
-// file name: CS112_A3_Part1_S15,16_20230100_20230211_20230246.cpp
-// description: the program has 5 filters, user choose one of them to apply in
-// his photo. Filter 1: Grayscale Conversion & Filter 4: Merge Images        =>
-// by   Peter Girgs Sayed          ID:20230100     S:15,16 Filter 2: Black and
-// White & Filter 7: Darken and Lighten Image => by   Abdelrhman Emad Mahmoud
-// ID:20230211     S:15,16 Filter 3: Invert Image => by   Ammar Ali Ghazi
-// ID:20230246     S:15,16
+// file name: CS112_A3_Part2B_S15,16_20230211_20230100_20230246.cpp
+// description: the program has 15 filters, user choose one or more of them to apply in his photo.
+// digram link: https://drive.google.com/file/d/1Xxmudktv9_FtC5UErDJsO5e339FSkrOa/view?usp=sharing
+// Team info :
+// Abdelhman Emad Mahmoud      ID: 20230211      S:15,16
+// Peter Girgs Sayed           ID: 20230100      S:15,16
+// Ammar Ali Ghazi             ID: 20230246      S:15,16
+// Filters (Grayscale & merge IMages & crop Image & Detect edges & skew)                  made by  Peter Girgs Sayed
+// Filters (black and white & Flip Image & darken and lighten & resizing & purple look)   made by  Abdelrhman Emad Mahmoud
+// Filters (invert IMage & rotate Image & add frame & Blur & TV IMages)                   made by  Ammar Ali Ghazi
+
 
 #include "Image_Class.h"
 #include <cmath>
@@ -13,6 +17,7 @@
 #include <string>
 using namespace std;
 
+// Function to specifies extension
 void choose_ext(string &extension) {
   cout << "inter photo name to store it: ";
   cin >> extension;
@@ -38,6 +43,7 @@ void choose_ext(string &extension) {
   }
 }
 
+// function to apply Gray scale filter on the Image
 Image gray_scale(Image &image) {
   for (int i = 0; i < image.width; i++) {
     for (int j = 0; j < image.height; j++) {
@@ -54,18 +60,19 @@ Image gray_scale(Image &image) {
   return image;
 }
 
+// function to apply black and white filter on the Image
 Image black_and_white(Image &image) {
   for (int i = 0; i < image.width; ++i) {
     for (int j = 0; j < image.height; ++j) {
-      unsigned int avg = 0;
+      double avg = 0;
       for (int k = 0; k < 3; k++) {
         avg += image(i, j, k);
       }
       avg /= 3;
       for (int k = 0; k < 3; k++) {
-        if (avg > 128) {
+        if (avg > 127.5) {
           image(i, j, k) = 255;
-        } else if (avg < 128) {
+        } else if (avg < 127.5) {
           image(i, j, k) = 0;
         }
       }
@@ -74,6 +81,7 @@ Image black_and_white(Image &image) {
   return image;
 }
 
+// funciont to invert Image
 Image invert_image(Image &image) {
   for (int i = 0; i < image.width; ++i) {
     for (int j = 0; j < image.height; ++j) {
@@ -85,6 +93,7 @@ Image invert_image(Image &image) {
   return image;
 }
 
+// function to merge two photos
 Image merge_images(Image &image1) {
   string filename_2;
   cout << "Pls enter second image path: ";
@@ -110,6 +119,7 @@ Image merge_images(Image &image1) {
   return new_image;
 }
 
+// function to flip image vertically or horizontally
 Image flip(Image &image) {
   string choice;
   cout << "[a] to Flip Vertically";
@@ -136,6 +146,7 @@ Image flip(Image &image) {
   return image;
 }
 
+// check if the input is number
 bool isNumber(string s) {
   for (char c : s) {
     if (!isdigit(c)) {
@@ -145,6 +156,7 @@ bool isNumber(string s) {
   return true;
 }
 
+// function to rotate Image 90 or 180 or 270 degree
 Image rotate_image(Image &image) {
 
   // get rotate degree
@@ -194,7 +206,8 @@ Image rotate_image(Image &image) {
     return image2;
   }
 }
-
+ 
+// function to darken and lighten image 
 Image darken_lighten(Image &Photo) {
   string choice;
   cout << "please inter what do you want \n";
@@ -233,6 +246,7 @@ Image darken_lighten(Image &Photo) {
   return Photo;
 }
 
+// function to crop image
 Image crop(Image &image) {
   cout << "Please enter crop dimensions separated by space";
   int x, y;
@@ -252,6 +266,7 @@ Image crop(Image &image) {
   return cropped_image;
 }
 
+// function to add frame to the Image
 Image frame(Image &image) {
 
   for (int i = 0; i < image.width / 100; ++i) {
@@ -420,6 +435,7 @@ Image frame(Image &image) {
   return image;
 }
 
+// function to detect edges
 Image detect_image_edges(Image &image) {
   image = gray_scale(image);
   image = black_and_white(image);
@@ -443,6 +459,7 @@ Image detect_image_edges(Image &image) {
   return edges;
 }
 
+// function to resize an image
 Image resize(Image &image) {
   int new_width, new_height;
   cout << "pls enter your photo width\n";
@@ -467,6 +484,7 @@ Image resize(Image &image) {
   return new_image;
 }
 
+// function to blur the Image
 Image blur(Image &image) {
   int n = 3;                                 // Blur radius
   int count = ((2 * n) + 1) * ((2 * n) + 1); // kernal size
@@ -496,6 +514,7 @@ int randomBetween(int low, int high) {
   return dis(gen);
 }
 
+// function to apply old TV noise filter
 Image tv(Image &image) {
 
   for (int i = 0; i < image.width; i += 2) {
@@ -511,6 +530,7 @@ Image tv(Image &image) {
   return image;
 }
 
+// function to make the photo purple
 Image purple_look(Image &image) {
   for (int i = 0; i < image.width; ++i) {
     for (int j = 0; j < image.height; ++j) {
@@ -538,6 +558,7 @@ Image purple_look(Image &image) {
   return image;
 }
 
+// function to skew the photo
 Image skew_image(Image &image) {
   cout << "enter a angel to skew image" << endl;
   double angle;
@@ -601,16 +622,11 @@ int main() {
 
       while (true) {
         cout << "please choose filter: \n"
-                "a)filter_1(gray_scale).                  "
-                "b)filter_2(black_and_white).   c)filter_3(invert_image).\n"
-                "d)filter_4(merge_images).                e)filter_5(Flip "
-                "Image).        f)filter_6(rotate_image).\n"
-                "g)filter_7(Darken and Lighten Image).    h)filter_8(crop).    "
-                "          i)filter_9(ِAdding a Frame ).\n"
-                "j)filter_10(detect image edges).         "
-                "k)filter_11(resizing_image).   l)filter_12(Blur Images).\n"
-                "m)filter_15(TV images).                  "
-                "n)filter_16(purple_look).      o)skew_18.\n"
+                "a)filter_1(gray_scale).                  ""b)filter_2(black_and_white).   c)filter_3(invert_image).\n"
+                "d)filter_4(merge_images).                e)filter_5(Flip ""Image).        f)filter_6(rotate_image).\n"
+                "g)filter_7(Darken and Lighten Image).    h)filter_8(crop).    ""          i)filter_9(ِAdding a Frame ).\n"
+                "j)filter_10(detect image edges).         ""k)filter_11(resizing_image).   l)filter_12(Blur Images).\n"
+                "m)filter_15(TV images).                  ""n)filter_16(purple_look).      o)skew_18.\n"
                 "p) exit \n";
         string choice;
         cin >> choice;
