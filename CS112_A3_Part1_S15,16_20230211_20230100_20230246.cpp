@@ -589,14 +589,14 @@ Image purple_look(string filename) {
 }
 
 Image skew_image(Image &image) {
+  double angle;
+  cin >> angle;
+  angle = (angle / 180) * 3.14;
   int width = image.width;
   int height = image.height;
   int newWidth = width + static_cast<int>(abs(height * tan(angle))) * 2;
   int newHeight = height;
   Image skewed(newWidth, newHeight);
-  double angle;
-  cin >> angle;
-  angle = (angle / 180) * 3.14;
   for (int y = 0; y < newHeight; ++y) {
     for (int x = 0; x < newWidth; ++x) {
       double srcX = x - (newWidth - width) / 2;
